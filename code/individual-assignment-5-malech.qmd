@@ -273,12 +273,6 @@ In 1-2 sentences each, describe:
 
 # 2. Visualizing total abundance as a function of salinity
 
-At the end of part 2c, you should have a figure:
-
-depicting log-transformed average abundance/L on the y-axis and salinity on the x-axis
-with different panels for each taxon in aq_ins_clean with free scales for both axes
-with each taxon in its own color
-
 ## a. Plan your figure
 
 - x-axis: median salinity
@@ -289,23 +283,31 @@ with each taxon in its own color
 
 ## b. Wrangle your data
 
-In this section, manipulate the existing aq_ins_clean data frame to create new columns, modify existing columns, and/or select columns to create the figure you outlined in part 1a.
-
 ```{r}
 #| label: clean-data
 
+# creating new object from aq_ins_clean
 taxon_sal <- aq_ins_clean |> 
+  # mutate to get taxon group -species
   mutate(taxon = str_remove(taxon, "_.*$"), na.rm = TRUE) |> 
+  # mutate to get log transformed abundance
   mutate(log_ave_lit = log(ave_lit + 1)) |> 
+  # group by taxon
   group_by(taxon) |> 
+  # select only necessary columns
   select(taxon, date, log_ave_lit, med_sal) |>
-  subset(!is.na(med_sal))
+  # remove na values from med_sal
+  subset(!is.na(med_sal)) |> 
+  # ungroup dataset
+  ungroup()
 ```
 
 ## c. Code your figure
 
 ```{r}
 #| label: visualization-sal-taxon
+#| fig-width: 14
+#| fig-height: 12
 
 # create ggplot layer
 ggplot(data = taxon_sal,
@@ -326,11 +328,21 @@ ggplot(data = taxon_sal,
        y = "log +1 transformed average abundance/L",
        title = "Taxon abundance with salinity measurements") +
 # adding custom colors
-
+  scale_color_manual(
+    values = c("annelida" = "tan",
+               "cladocera" = "orange",
+               "copepod" = "pink",
+               "diptera" = "hotpink",
+               "hemiptera" = "coral",
+               "nematode" = "aquamarine",
+               "ostracod" = "maroon")) +
 # changing default theme
-  theme_bw()
+  theme_bw() +
 # removing legend
   theme(legend.position = "none")
+
+# make sure each taxon is in title case
+# order taxon levels by maximum abundance
 ```
 
 ## d. Interpret your figure
