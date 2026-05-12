@@ -31,6 +31,7 @@ library(naniar)
 library(patchwork)
 ```
 
+# Load Data
 ```{r}
 #| label: load-data
 
@@ -55,6 +56,8 @@ water_quality <- read_xlsx(here("data", "Aquatic Sampling Data-2026-03-10.xlsx")
 
 ```{r}
 #| label: in-class-code
+#| results: 'hide'
+#| fig-show: 'hide'
 
 # creating new object from sites
 ncos_sites <- sites |> 
