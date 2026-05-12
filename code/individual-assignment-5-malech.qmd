@@ -134,7 +134,8 @@ aq_ins_clean <- aq_ins |>
     site == "NDC" ~ "Devereux Creek"
   )) |> 
   # setting factor levels for site
-  mutate(site_full = fct_reorder(site_full, med_sal, .fun = "median", .na_rm = TRUE),
+  mutate(site_full = fct_reorder(site_full, med_sal, .fun = "median", 
+                                 .na_rm = TRUE),
          site_full = fct_rev(site_full))
 
 # creating new object from clean aquatic inverts 
@@ -255,6 +256,8 @@ ostracod1
 
 ```{r}
 #| label: multipanel-fig
+#| fig-width: 14
+#| fig-height: 12
 
 # creating stacked graphs
 # salinity on top; then copepods - ostracod underneath
@@ -286,13 +289,49 @@ with each taxon in its own color
 
 ## b. Wrangle your data
 
+In this section, manipulate the existing aq_ins_clean data frame to create new columns, modify existing columns, and/or select columns to create the figure you outlined in part 1a.
+
 ```{r}
 #| label: clean-data
 
+taxon_sal <- aq_ins_clean |> 
+  mutate(taxon = str_remove(taxon, "_.*$"), na.rm = TRUE) |> 
+  mutate(log_ave_lit = log(ave_lit + 1)) |> 
+  group_by(taxon) |> 
+  select(taxon, date, log_ave_lit, med_sal) |>
+  subset(!is.na(med_sal))
 ```
 
 ## c. Code your figure
 
+```{r}
+#| label: visualization-sal-taxon
+
+# create ggplot layer
+ggplot(data = taxon_sal,
+# x-axis: median salinity
+# y-axis: log transformed abundance
+# color: by taxon
+       mapping = aes(x = med_sal,
+                     y = log_ave_lit,
+                     color = taxon)) +
+# creating panels for each taxon group
+  facet_wrap(~taxon, scales = "free") +
+# adding line geometries
+  geom_line() +
+# adding point geometries
+  geom_point() +
+# adding labels
+  labs(x = "Median Salinity",
+       y = "log +1 transformed average abundance/L",
+       title = "Taxon abundance with salinity measurements") +
+# adding custom colors
+
+# changing default theme
+  theme_bw()
+# removing legend
+  theme(legend.position = "none")
+```
 
 ## d. Interpret your figure
 
