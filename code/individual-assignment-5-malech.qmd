@@ -61,13 +61,6 @@ ncos_sites <- sites |>
   # filter to only include NCOS sites sampled four times a year
   filter(sector == "NCOS" & sampling_frequency == "Quarterly")
 
-# creating new clean object from taxon_list
-taxon_list_clean <- taxon_list |> 
-  # converting taxon name to snake case (no spaces or capital letters,
-  # only underscores)
-  mutate(verbatim_name = to_any_case(verbatim_name, case = "snake"))
-
-# creating new clean object from water quality
 water_quality_clean <- water_quality |> 
   # clean column names
   clean_names() |> 
@@ -84,7 +77,7 @@ water_quality_clean <- water_quality |>
   # ungroup data frame
   ungroup() |> 
   # filter out salinity outliers
-  filter(date_site != "2022-08-12_NVBR") 
+  filter(date_site != "2022-08-12_NVBR")
 
 # creating new clean object from aquatic inverts
 aq_ins_clean <- aq_ins |> 
@@ -195,8 +188,6 @@ salinity <- ggplot(data = aq_ins_clean,
 
 # 1. Visualizing Differences across sites in major taxon abundance
 
-Outcome: three panel figure, with site on x-axis but with a different y-axis.
-
 ## a. Plan your figure
 
 - x-axis: site ()
@@ -210,11 +201,14 @@ stat_summary(geompoint)
 ```{r}
 #| label: cleaning-aq-ins-clean
 
-avg_ostracod <- aq_ins_clean |> 
+# new object from aq_ins_clean
+avg_ostracod <- aq_ins_clean |>
+# filter to only have ostacod observations
   filter(taxon == "ostracod", rm.na = TRUE) |>
   # log + 1 transform mean abundance per liter
   mutate(log_ave_lit = log(ave_lit + 1))
 
+# sample of ten rows
 slice_sample(avg_ostracod, n = 10)
 ```
 
@@ -223,19 +217,29 @@ slice_sample(avg_ostracod, n = 10)
 ```{r}
 #| label: plotting-ostracod
 
+# creating object and adding ggplot layer using avg_ostacod
 ostracod1 <- ggplot(data = avg_ostracod,
+# x-axis: site
+# y-axis: log trans liter abundance
                     mapping = aes(x = site_full,
-                                  y = log_ave_lit)) + geom_jitter(height = 0, shape = 21, width = 0.1) +
+                                  y = log_ave_lit)) +
+# jitter for individual mean points
+  geom_jitter(height = 0, shape = 21, width = 0.1) +
+# adding median points
   stat_summary(geom = "point",
                fun = "median",
                size = 4,
                color = "purple") +
+# wrapping x-axis text for no overlap
     scale_x_discrete(labels = label_wrap(15)) +
+# adding labels
   labs(x = "Site",
        y = "log + 1 transformed average abundance/L",
        title = "Ostracod abundance across NCOS sites") +
+# removing space between x-axis and 0
   scale_y_continuous(limits = c(-0.1, 8),
                      expand = c(0, 0)) + 
+# changing theme from default
   theme_bw()
 
 ostracod1
@@ -246,19 +250,33 @@ ostracod1
 ```{r}
 #| label: multipanel-fig
 
+# creating stacked graphs
+# salinity on top; then copepods - ostracod underneath
 salinity / (copepods | ostracod1)
 ```
 
 ## e. Interpret your figure
 
+In 1-2 sentences each, describe:
 
+- differences between sites in copepod and ostracod abundance
+- how ostracod abundance may relate (or not) to site-level differences in salinity
 
 # 2. Visualizing total abundance as a function of salinity
 
+At the end of part 2c, you should have a figure:
+
+depicting log-transformed average abundance/L on the y-axis and salinity on the x-axis
+with different panels for each taxon in aq_ins_clean with free scales for both axes
+with each taxon in its own color
 
 ## a. Plan your figure
 
-
+- x-axis:
+- y-axis:
+- color:
+- geometry: 
+- facets: facet_wrap(~taxon)
 
 ## b. Wrangle your data
 
