@@ -230,6 +230,7 @@ ostracod1 <- ggplot(data = avg_ostracod,
                fun = "median",
                size = 4,
                color = "purple") +
+    scale_x_discrete(labels = label_wrap(15)) +
   labs(x = "Site",
        y = "log + 1 transformed average abundance/L",
        title = "Ostracod abundance across NCOS sites") +
@@ -245,14 +246,7 @@ ostracod1
 ```{r}
 #| label: multipanel-fig
 
-
-
-
-
-
-
-
-
+salinity / (copepods | ostracod1)
 ```
 
 ## e. Interpret your figure
