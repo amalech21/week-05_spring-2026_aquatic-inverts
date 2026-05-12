@@ -289,7 +289,15 @@ In 1-2 sentences each, describe:
 # creating new object from aq_ins_clean
 taxon_sal <- aq_ins_clean |> 
   # mutate to get taxon group -species
-  mutate(taxon = str_remove(taxon, "_.*$"), na.rm = TRUE) |> 
+  mutate(taxon = case_when(
+    str_detect(taxon, "annelida") ~ "Annelida",
+    str_detect(taxon, "cladocera") ~ "Cladocera",
+    str_detect(taxon, "copepod") ~ "Copepod",
+    str_detect(taxon, "diptera") ~ "Diptera",
+    str_detect(taxon, "hemiptera") ~ "Hemiptera",
+    str_detect(taxon, "nematode") ~ "Nematode",
+    str_detect(taxon, "ostracod") ~ "Ostracod"
+  )) |> 
   # mutate to get log transformed abundance
   mutate(log_ave_lit = log(ave_lit + 1)) |> 
   # group by taxon
@@ -329,19 +337,18 @@ ggplot(data = taxon_sal,
        title = "Taxon abundance with salinity measurements") +
 # adding custom colors
   scale_color_manual(
-    values = c("annelida" = "tan",
-               "cladocera" = "orange",
-               "copepod" = "pink",
-               "diptera" = "hotpink",
-               "hemiptera" = "coral",
-               "nematode" = "aquamarine",
-               "ostracod" = "maroon")) +
+    values = c("Annelida" = "tan",
+               "Cladocera" = "orange",
+               "Copepod" = "pink",
+               "Diptera" = "hotpink",
+               "Hemiptera" = "coral",
+               "Nematode" = "aquamarine",
+               "Ostracod" = "maroon")) +
 # changing default theme
   theme_bw() +
 # removing legend
   theme(legend.position = "none")
 
-# make sure each taxon is in title case
 # order taxon levels by maximum abundance
 ```
 
