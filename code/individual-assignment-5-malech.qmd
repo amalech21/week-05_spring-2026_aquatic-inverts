@@ -269,10 +269,9 @@ salinity / (copepods | ostracod1)
 
 ## e. Interpret your figure
 
-In 1-2 sentences each, describe:
+The average abundance of Ostracods are relatively low (around 0), with the exception of South of Phelps Bridge and Devereux Creek with a hgiher abundance of around 2 per liter. Copepod abundance is generally higher but more variable, with the main channel and N. phelps bridge locations relatively low and all other locations having around 2-3 copepods per liter. 
 
-- differences between sites in copepod and ostracod abundance
-- how ostracod abundance may relate (or not) to site-level differences in salinity
+There seems to be a negative correlation between ostracod abundance and site salinity levels, as the site lowers in median salinity levels, ostracod abundance increases on average. There are a few exceptions - namely N. phelps bridge and phelps road that does not follow this trend - but generally it seems that the main channel abundance increases as its salinity drops along with S. Phelps bridge and Devereux creek, which could point to ostracods prefering freshwater over saltier water. 
 
 # 2. Visualizing total abundance as a function of salinity
 
@@ -335,7 +334,7 @@ ggplot(data = taxon_sal,
 # adding point geometries
   geom_point() +
 # adding labels
-  labs(x = "Median Salinity",
+  labs(x = "Median Salinity (ppt)",
        y = "log +1 transformed average abundance/L",
        title = "Taxon abundance with salinity measurements") +
 # adding custom colors
@@ -357,5 +356,6 @@ ggplot(data = taxon_sal,
 
 ## d. Interpret your figure
 
+All taxon groups seem to have peaks in abundance when salinity is measured at 0, as well as quite a few groups having peaks around a salinity of 40 ppt
 
 
