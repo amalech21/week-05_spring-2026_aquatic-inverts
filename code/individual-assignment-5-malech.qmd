@@ -61,6 +61,12 @@ ncos_sites <- sites |>
   # filter to only include NCOS sites sampled four times a year
   filter(sector == "NCOS" & sampling_frequency == "Quarterly")
 
+# creating new clean object from taxon_list
+taxon_list_clean <- taxon_list |> 
+  # converting taxon name to snake case (no spaces or capital letters,
+  # only underscores)
+  mutate(verbatim_name = to_any_case(verbatim_name, case = "snake"))
+
 water_quality_clean <- water_quality |> 
   # clean column names
   clean_names() |> 
@@ -272,15 +278,18 @@ with each taxon in its own color
 
 ## a. Plan your figure
 
-- x-axis:
-- y-axis:
-- color:
-- geometry: 
+- x-axis: median salinity
+- y-axis: log +1 avg abundance/L
+- color: taxon
+- geometry: geom_line(), geom_point()
 - facets: facet_wrap(~taxon)
 
 ## b. Wrangle your data
 
+```{r}
+#| label: clean-data
 
+```
 
 ## c. Code your figure
 
