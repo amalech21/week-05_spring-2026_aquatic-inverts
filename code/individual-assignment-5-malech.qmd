@@ -356,6 +356,6 @@ ggplot(data = taxon_sal,
 
 ## d. Interpret your figure
 
-All taxon groups seem to have peaks in abundance when salinity is measured at 0, as well as quite a few groups having peaks around a salinity of 40 ppt
+All taxon groups seem to have peaks in abundance when salinity is measured at 0, as well as quite a few groups having peaks around a salinity of 40 ppt besides nemotodes and ostracods. From this graph, it looks like copecods have the highest average abundance overall across salinity levels, with Ostracods and Cladoceras following closely behind. This aligns with the idea that Copecod abundance has a stronger relationship to salinity levels compared to all other groups. 
 
 
