@@ -232,7 +232,7 @@ slice_sample(avg_ostracod, n = 10)
 
 ```{r}
 #| label: plotting-ostracod
-#| fig-width: 10
+#| fig-width: 14
 #| fig-height: 8
 
 # creating object and adding ggplot layer using avg_ostacod
