@@ -1,8 +1,14 @@
 ---
 title: "Individual Assignment 5"
 author: "Abby Malech"
-format: pdf
-date: "2026-05-11"
+format: 
+  pdf:
+    include-in-header: 
+       text: |
+         \usepackage{fvextra}
+         \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+         \DefineVerbatimEnvironment{OutputCode}{Verbatim}{breaklines,commandchars=\\\{\}}
+date: "2026-05-13"
 execute:
   message: false
   warning: false
@@ -269,9 +275,9 @@ salinity / (copepods | ostracod1)
 
 ## e. Interpret your figure
 
-The average abundance of Ostracods are relatively low (around 0), with the exception of South of Phelps Bridge and Devereux Creek with a hgiher abundance of around 2 per liter. Copepod abundance is generally higher but more variable, with the main channel and N. phelps bridge locations relatively low and all other locations having around 2-3 copepods per liter. 
+The average abundance of Ostracods are relatively low (around 0), with the exception of South of Phelps Bridge and Devereux Creek with a higher abundance of around 2 per liter. Copepod abundance is generally higher but more variable, with the main channel and N. phelps bridge locations relatively low and all other locations having around 2-3 copepods per liter. 
 
-There seems to be a negative correlation between ostracod abundance and site salinity levels, as the site lowers in median salinity levels, ostracod abundance increases on average. There are a few exceptions - namely N. phelps bridge and phelps road that does not follow this trend - but generally it seems that the main channel abundance increases as its salinity drops along with S. Phelps bridge and Devereux creek, which could point to ostracods prefering freshwater over saltier water. 
+There seems to be a negative correlation between ostracod abundance and site salinity levels, as the site lowers in median salinity levels, ostracod abundance increases on average. There are a few exceptions - namely N. phelps bridge and phelps road that does not follow this trend - but generally it seems that the main channel abundance increases as its salinity drops along with S. Phelps bridge and Devareux creek, which could point to ostracods preferring freshwater over saltier water. 
 
 # 2. Visualizing total abundance as a function of salinity
 
@@ -308,8 +314,13 @@ taxon_sal <- aq_ins_clean |>
   select(taxon, date, log_ave_lit, med_sal) |>
   # remove na values from med_sal
   subset(!is.na(med_sal)) |> 
+  # order taxon levels by maximum abundance
+  arrange(desc(log_ave_lit)) |> 
   # ungroup dataset
   ungroup()
+
+# displaying 10 random rows
+slice_sample(taxon_sal, n = 10)
 ```
 
 ## c. Code your figure
@@ -350,8 +361,6 @@ ggplot(data = taxon_sal,
   theme_bw() +
 # removing legend
   theme(legend.position = "none")
-
-# order taxon levels by maximum abundance
 ```
 
 ## d. Interpret your figure
